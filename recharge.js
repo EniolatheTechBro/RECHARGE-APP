@@ -1,5 +1,7 @@
-let card =  []
-let reSet = false
+let card = JSON.parse(localStorage.getItem('CARD'))
+if(!card){
+    card=[]
+};
 
 function Gen() {
     let pin = Math.floor(Math.random()*1000000000000)
@@ -14,36 +16,21 @@ function Gen() {
     let date = new Date();
     let hour = date.getHours();
     let min = date.getMinutes();
-    let year = date.getFullYear();
+    // let year = date.getFullYear();
     let time = hour + ':' + min
     // console.log(`${hour}:${min}`);
     let dateT = date.toLocaleDateString() 
     dateUsed = false
 
+    let codes = {
+        MTN:'*555*',
+        AIRTEL:'*126*',
+        GLO:'*123*',
+        NINEMOBILE:'*222*'
+    }
 
-    // console.log(`${dateT}`);
+    let kode = codes[network]
 
-    
-        if(network === 'MTN'){
-
-        kode = '*555*'
-
-        }
-        if(network === 'GLO'){
-
-        kode = '*123*'
-
-        }
-        if(network === '9MOBILE'){
-
-        kode = '*222*'
-
-        }
-        if(network === 'AIRTEL'){
-
-        kode = '*126*'
-
-        }
     
     let cardB = {
         network,Amnt,pincode,kode,status,dateT,time,dateUsed
@@ -51,7 +38,7 @@ function Gen() {
 
     card.push(cardB)
 
-    // console.log(cardB);
+    console.log(cardB);
 
 }
 
@@ -64,10 +51,10 @@ function savePin(){
     
 }
 
-function DisP(index){
+function DisP(){
 
     
-    let card = JSON.parse(localStorage.getItem('CARD'))
+    card = JSON.parse(localStorage.getItem('CARD'))
 
     Table.innerHTML = ''
     card.forEach((elem,i)=>{
@@ -84,6 +71,8 @@ function DisP(index){
                         <td>${elem.status ? 'used' : 'unused'}</td>
                         <td>${elem.dateT};${elem.time}</td>
                         <td>${elem.dateUsed ? elem.dateT + elem.time : 'Not yet used' }</td>
+                        <td><button class="delBTN" onclick="del(${i})">DEL</button></td>
+                    
 
                     </tr>
                 </tbody>
@@ -93,50 +82,83 @@ function DisP(index){
             <h3>Recharge Here:</h3>
             <input type="text" name="" id="pinInput">
         
-            <button type="button" class="rechgBTN" onclick="recharge(${i})">RECHARGE</button>
+            <button type="button" class="rechgBTN" onclick="recharge()">RECHARGE</button>
             
         `
     })
 
+    
+
                
 }
+
 DisP()
 
-function recharge(index){
-    console.log(index);
-    
-    card.forEach((elem,i)=>{
+let useD = false
 
-        
-        let card = JSON.parse(localStorage.getItem('CARD'))
+function recharge(){
+    console.log();
     
-        if(i===index){
-            
+    let card = JSON.parse(localStorage.getItem('CARD'))
+    let found = false
+  
+    card.forEach((elem,i)=>{
+        
+ 
             let PIN = pinInput.value
         
             let kk = elem.kode
             let pp = elem.pincode
             let ccc = kk + pp + '#'
-            if(PIN == ccc || PIN.length === 18){
-            
+            if(PIN == ccc ){    
+                if(elem.status === true){
+                    useD = true
+                }else{
+                    
                 elem.status = true
                 elem.dateUsed = true
+                useD = false
                 alert('Recharge Successful')
-                reSet = true
-            }else if(PIN !== ccc){
-                elem.status = false
-                alert('please input your pin') 
+                }
+
+                found = true
             } 
-        }
+            
     }) 
-
-
+    
     localStorage.setItem('CARD',JSON.stringify(card))
-    console.log(card);
+    // console.log(card);
 
     
     DisP()
+
     
+    if(useD === true){
+        alert('This card has been used!!')
+    }
+
+    if(!found){
+        alert('Please Input your pincode!!')
+    }
+
+    console.log(useD);
+
+    if(!found){
+        alert('please input your pin') 
+    } 
+    
+
+   
+    
+}
+
+
+function del(id){
+
+    card.splice(id, 1)
+    localStorage.setItem('CARD',JSON.stringify(card))
+    DisP()
+
 }
 
 
