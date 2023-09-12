@@ -16,6 +16,7 @@
 
             <label for="network">SELECT NETWORK:</label>
            <select name="network" id="NETWORK">
+            <option value=""disabled selected>Click this to select network provider</option>
                 <option  value="NINEMOBILE">9MOBILE</option>
                 <option  value="GLO">GLO</option>
                 <option value="MTN">MTN</option>
@@ -25,6 +26,8 @@
            <br><br>
             <label for="amount">AMOUNT:</label>
            <select name="amount" id="Amount" >
+
+                <option  value="" disabled selected>Kindly Select Amount</option>
                 <option  value="500">500</option>
                 <option  value="1000">1000</option>
                 <option  value="2000">2000</option>
@@ -36,14 +39,18 @@
     
            <label for="code">CODE:</label>
            <input type="text" name="code" id="codeInput">
-           <button type="button" class="btn btn-success" onclick="Gen()">GENERATE PIN</button>
-           <button type="button" class="btn btn-warning" onclick="savePin()">SAVE PIN</button>
+           <button type="button" class="btn btn-success" id="genBTN">GENERATE PIN</button>
+           <button type="button" class="btn btn-warning" id="saveBTN">SAVE PIN</button>
            
         </div>
     
         <div id="rechargee">
             
         </div>
+
+      <div id="messagediv">
+
+      </div>
     </div>
 
 
